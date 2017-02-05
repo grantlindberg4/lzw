@@ -28,7 +28,7 @@ void encode(FILE* input, FILE* output) {
         unsigned int code;
         _Bool found_code = search_for_key(dictionary, X, &code);
         if(found_code) {
-            // delete_sequence(W);
+            delete_sequence(W);
             W = copy_sequence(X);
         }
         else {
@@ -39,11 +39,11 @@ void encode(FILE* input, FILE* output) {
                 insert_to_dictionary(dictionary, copy_sequence(X), next_code);
                 next_code++;
             }
-            // delete_sequence(W);
+            delete_sequence(W);
             W = create_sequence();
             append(W, c);
         }
-        // delete_sequence(X);
+        delete_sequence(X);
     }
     unsigned int code;
     _Bool found_code = search_for_key(dictionary, W, &code);
@@ -51,7 +51,8 @@ void encode(FILE* input, FILE* output) {
         write_code(output, code);
     }
 
-    // destroy_dictionary(dictionary);
+	delete_sequence(W);
+    destroy_dictionary(dictionary);
 }
 
 // void decode(FILE* input, FILE* output) {
