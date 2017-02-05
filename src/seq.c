@@ -9,14 +9,12 @@ Sequence* create_sequence() {
 	sequence->length = 0;
 	sequence->chars = malloc(sizeof(char));
 	sequence->chars[0] = '\0';
-	// fprintf(stderr, "> --- created sequence: %p\n", sequence);
 
 	return sequence;
 }
 
 void append(Sequence* sequence, char c) {
 	sequence->chars = realloc(sequence->chars, sequence->length+2);
-	// fprintf(stderr, "> --- realloced %p as %p (%s)\n", prev, sequence->chars, sequence->chars);
 	sequence->chars[sequence->length] = c;
 	sequence->chars[sequence->length+1] = '\0';
 	sequence->length++;
@@ -55,7 +53,6 @@ Sequence* copy_sequence(Sequence* orig) {
 }
 
 void delete_sequence(Sequence* sequence) {
-	// fprintf(stderr, "> --- deleting sequence: %p (%s)\n", sequence, sequence->chars);
 	free(sequence->chars);
 	free(sequence);
 }

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -std=c99 -Wall -Wpedantic -g
-OBJS := $(addprefix build/,seq.o)
+OBJS := $(addprefix build/,seq.o dict.o)
 
 .DEFAULT: all
 

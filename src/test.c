@@ -2,6 +2,7 @@
 #include <assert.h>
 
 #include "seq.h"
+#include "dict.h"
 
 void test_seq() {
 	Sequence* empty = create_sequence();
@@ -94,8 +95,76 @@ void test_seq() {
 	delete_sequence(bc);
 }
 
+void test_dict() {
+	unsigned int code = 0xDEADBEEF;
+	Dict* dict_1 = create_dictionary();
+	Sequence* empty = create_sequence();
+	Sequence* a = create_sequence();
+	append(a, 'a');
+	Sequence* foo = create_sequence();
+	append(foo, 'f');
+	append(foo, 'o');
+	append(foo, 'o');
+	assert(!search_for_key(dict_1, empty, &code));
+	assert(!search_for_key(dict_1, a, &code));
+	assert(!search_for_key(dict_1, foo, &code));
+	assert(code == 0xDEADBEEF);
+
+	insert_to_dictionary(dict_1, copy_sequence(empty), 0xAB);
+	assert(search_for_key(dict_1, empty, &code));
+	assert(code == 0xAB);
+	assert(!search_for_key(dict_1, a, &code));
+	assert(!search_for_key(dict_1, foo, &code));
+
+	insert_to_dictionary(dict_1, copy_sequence(a), 0xCD);
+	assert(search_for_key(dict_1, empty, &code));
+	assert(code == 0xAB);
+	assert(search_for_key(dict_1, a, &code));
+	assert(code == 0xCD);
+	assert(!search_for_key(dict_1, foo, &code));
+
+	insert_to_dictionary(dict_1, copy_sequence(foo), 0xEF);
+	assert(search_for_key(dict_1, empty, &code));
+	assert(code == 0xAB);
+	assert(search_for_key(dict_1, a, &code));
+	assert(code == 0xCD);
+	assert(search_for_key(dict_1, foo, &code));
+	assert(code == 0xEF);
+
+	destroy_dictionary(dict_1);
+
+	Dict* dict_2 = initialize_dictionary();
+
+	assert(!search_for_key(dict_2, empty, &code));
+	assert(search_for_key(dict_2, a, &code));
+	assert(code == 'a');
+	assert(!search_for_key(dict_2, foo, &code));
+
+	insert_to_dictionary(dict_2, copy_sequence(empty), 0xAB);
+	assert(search_for_key(dict_2, empty, &code));
+	assert(code == 0xAB);
+	assert(search_for_key(dict_2, a, &code));
+	assert(code == 'a');
+	assert(!search_for_key(dict_2, foo, &code));
+
+	insert_to_dictionary(dict_2, copy_sequence(foo), 0xEF);
+	assert(search_for_key(dict_2, empty, &code));
+	assert(code == 0xAB);
+	assert(search_for_key(dict_2, a, &code));
+	assert(code == 'a');
+	assert(search_for_key(dict_2, foo, &code));
+	assert(code == 0xEF);
+
+	destroy_dictionary(dict_2);
+
+	delete_sequence(empty);
+	delete_sequence(a);
+	delete_sequence(foo);
+}
+
 int main() {
 	test_seq();
+	test_dict();
 	printf("All tests passed!\n");
 	return 0;
 }
