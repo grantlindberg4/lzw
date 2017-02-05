@@ -1,7 +1,9 @@
 #include <stdio.h>
 
+#include "lzw.h"
+
 int main() {
-	printf("Hello world!\n");
+	encode(stdin, stdout);
 
 	return 0;
 }
