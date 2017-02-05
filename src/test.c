@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <assert.h>
+#include <dirent.h>
+#include <string.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 #include "seq.h"
 #include "dict.h"
+#include "lzw.h"
 
 void test_seq() {
 	Sequence* empty = create_sequence();
@@ -162,9 +168,106 @@ void test_dict() {
 	delete_sequence(foo);
 }
 
+bool ext_equals(struct dirent* entry, const char* extension) {
+	int name_len = strlen(entry->d_name);
+	int ext_len = strlen(extension);
+	if(name_len < ext_len) {
+		return false;
+	}
+	const char* file_ext = entry->d_name + name_len - ext_len;
+
+	return strcmp(file_ext, extension) == 0;
+}
+
+bool files_are_equal(FILE* a, FILE* b) {
+	Sequence* seq_a = create_sequence();
+	Sequence* seq_b = create_sequence();
+
+	int byte;
+	while(true) {
+		byte = fgetc(a);
+		if(byte == EOF) {
+			break;
+		}
+		append(seq_a, byte);
+	}
+	while(true) {
+		byte = fgetc(b);
+		if(byte == EOF) {
+			break;
+		}
+		append(seq_b, byte);
+	}
+	bool equal = sequences_are_equal(seq_a, seq_b);
+	delete_sequence(seq_a);
+	delete_sequence(seq_b);
+	return equal;
+}
+
+typedef void(*DoFixture)(char* raw_name, char* lzw_name);
+
+void for_each_fixture(DoFixture f) {
+	DIR* fixtures_dir = opendir("./fixtures");
+	assert(fixtures_dir != NULL);
+
+	struct dirent* entry;
+	while(true) {
+		entry = readdir(fixtures_dir);
+		if(entry == NULL) {
+			break;
+		}
+
+		if(ext_equals(entry, ".bin")) {
+			const char* entry_name = entry->d_name;
+			int raw_name_length = 0;
+			raw_name_length += sizeof("./fixtures/");
+			raw_name_length += strlen(entry_name);
+			int lzw_name_length = raw_name_length + sizeof(".lzw");
+			char* raw_name = malloc(raw_name_length);
+			snprintf(raw_name, raw_name_length, "./fixtures/%s", entry_name);
+
+			char* lzw_name = malloc(lzw_name_length);
+			snprintf(lzw_name, lzw_name_length, "./fixtures/%s.lzw", entry_name);
+
+			f(raw_name, lzw_name);
+			free(raw_name);
+			free(lzw_name);
+		}
+	}
+
+	closedir(fixtures_dir);
+}
+
+void test_lzw_encode(char* raw_name, char* lzw_name) {
+	FILE* raw = fopen(raw_name, "r");
+	assert(raw != NULL);
+	FILE* lzw_expected = fopen(lzw_name, "r");
+	assert(lzw_expected != NULL);
+	FILE* lzw_actual = tmpfile();
+	assert(lzw_actual != NULL);
+	printf("Comparing encoding %s and %s\n", raw_name, lzw_name);
+
+	encode(raw, lzw_actual);
+
+	fseek(lzw_actual, 0, SEEK_SET);
+
+	bool equal = files_are_equal(lzw_expected, lzw_actual);
+
+	fclose(raw);
+	fclose(lzw_expected);
+	fclose(lzw_actual);
+
+	assert(equal);
+}
+
+void test_lzw() {
+	for_each_fixture(test_lzw_encode);
+}
+
 int main() {
 	test_seq();
 	test_dict();
+	test_lzw();
 	printf("All tests passed!\n");
 	return 0;
 }
