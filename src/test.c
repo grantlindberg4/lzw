@@ -9,6 +9,7 @@
 #include "seq.h"
 #include "dict.h"
 #include "lzw.h"
+#include "table.h"
 
 void test_seq() {
 	Sequence* empty = create_sequence();
@@ -168,6 +169,54 @@ void test_dict() {
 	delete_sequence(foo);
 }
 
+void test_table() {
+	Sequence* empty = create_sequence();
+	Sequence* a = create_sequence();
+	append(a, 'a');
+	Sequence* foo = create_sequence();
+	append(foo, 'f');
+	append(foo, 'o');
+	append(foo, 'o');
+
+	unsigned empty_code = NUM_CHARS;
+	unsigned a_code = 'a';
+	unsigned foo_code = NUM_CHARS+1;
+
+	Table* table_1 = create_table();
+
+	assert(table_1->array[empty_code] == NULL);
+	assert(table_1->array[a_code] == NULL);
+	assert(table_1->array[foo_code] == NULL);
+
+	table_1->array[empty_code] = empty;
+	table_1->array[a_code] = a;
+	table_1->array[foo_code] = foo;
+
+	destroy_table(table_1);
+
+
+
+	empty = create_sequence();
+	a = create_sequence();
+	append(a, 'a');
+	foo = create_sequence();
+	append(foo, 'f');
+	append(foo, 'o');
+	append(foo, 'o');
+
+	Table* table_2 = initialize_table();
+
+	assert(table_2->array[empty_code] == NULL);
+	assert(sequences_are_equal(table_2->array[a_code], a));
+	assert(table_2->array[foo_code] == NULL);
+
+	table_2->array[empty_code] = empty;
+	table_2->array[foo_code] = foo;
+
+	delete_sequence(a);
+	destroy_table(table_2);
+}
+
 bool ext_equals(struct dirent* entry, const char* extension) {
 	int name_len = strlen(entry->d_name);
 	int ext_len = strlen(extension);
@@ -267,6 +316,7 @@ void test_lzw() {
 int main() {
 	test_seq();
 	test_dict();
+	test_table();
 	test_lzw();
 	printf("All tests passed!\n");
 	return 0;
