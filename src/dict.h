@@ -32,6 +32,4 @@ _Bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code);
 void delete_entry(Entry* entry);
 _Bool space_in(Dict* dictionary, int num_codes);
 
-void print_dictionary(Dict* dictionary);
-
 #endif

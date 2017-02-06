@@ -19,6 +19,7 @@ void encode(FILE* input, FILE* output) {
         append(W, c);
     }
     while(c != EOF) {
+
         c = fgetc(input);
         if(c == EOF) {
             break;
@@ -60,7 +61,6 @@ void decode(FILE* input, FILE* output) {
 
     unsigned int prev_code;
     _Bool reading_codes = read_code(input, &prev_code);
-	// printf("prev code: %d\n", prev_code);
 	if(reading_codes) {
 		output_sequence(code_table->array[prev_code], output);
 	}

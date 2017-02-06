@@ -16,7 +16,7 @@ _Bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code) {
     Entry* current = dictionary->array[hash_val];
     while(current != NULL) {
         if(sequences_are_equal(current->sequence, sequence)) {
-            *code = dictionary->array[hash_val]->code;
+            *code = current->code;
             return true;
         }
         current = current->next;
@@ -51,22 +51,7 @@ Dict* initialize_dictionary() {
         insert_to_dictionary(dictionary, sequence, i);
     }
 
-    // print_dictionary(dictionary);
-
     return dictionary;
-}
-
-// Used for debugging purposes
-void print_dictionary(Dict* dictionary) {
-    for(int i = 0; i < dictionary->size; i++) {
-        printf("i = %i\n", i);
-        Entry* current = dictionary->array[i];
-        while(current != NULL) {
-            Entry* next = current->next;
-            printf("seq = %s\n", current->sequence->chars);
-            current = next;
-        }
-    }
 }
 
 void destroy_dictionary(Dict* dictionary) {

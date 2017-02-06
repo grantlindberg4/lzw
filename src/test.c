@@ -167,6 +167,30 @@ void test_dict() {
 	delete_sequence(empty);
 	delete_sequence(a);
 	delete_sequence(foo);
+
+
+
+	Dict* dict_3 = initialize_dictionary();
+
+	Sequence* one = create_sequence();
+	append(one, '\1');
+
+	Sequence* zero_one = create_sequence();
+	append(zero_one, '\0');
+	append(zero_one, '\1');
+
+	unsigned int zero_one_code = NUM_CHARS;
+
+	assert(search_for_key(dict_3, one, &code));
+	assert(code == '\1');
+	assert(!search_for_key(dict_3, zero_one, &code));
+
+	insert_to_dictionary(dict_3, copy_sequence(zero_one), zero_one_code);
+
+	assert(search_for_key(dict_3, zero_one, &code));
+	assert(code == zero_one_code);
+	assert(search_for_key(dict_3, one, &code));
+	assert(code == '\1');
 }
 
 void test_table() {
@@ -332,7 +356,7 @@ void test_lzw_decode(char* raw_name, char* lzw_name) {
 }
 
 void test_lzw() {
-	// for_each_fixture(test_lzw_encode);
+	for_each_fixture(test_lzw_encode);
 	for_each_fixture(test_lzw_decode);
 }
 
