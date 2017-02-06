@@ -6,15 +6,6 @@
 #include "lzw.h"
 #include "seq.h"
 
-// Tests to be run:
-// check all functions in sequence - OK!
-// try freeing sequences and check for mem leaks in valgrind
-// check input parsing
-// initialize dictionary correctly (examine contents) (make array smaller)
-// add one entry to dictionary
-// Don't forget to figure out how to output last sequence in decode()
-// How to do debugging for program?
-
 void display_usage_message() {
     fprintf(stderr, "Usage:  ./lzw <option1> <option2> ... <optionN>\n");
     fprintf(stderr, "        Where <option>'s must be one or more of the following:\n");

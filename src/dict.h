@@ -5,10 +5,8 @@
 
 #include "seq.h"
 
-// #define NUM_ENTRIES 46001
 #define NUM_CHARS 256
 #define NUM_ENTRIES 256
-// #define NUM_CHARS 60
 #define MAX_CODE 65536
 
 typedef struct Entry {
