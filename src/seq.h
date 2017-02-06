@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 typedef struct {
-	char* chars;
-	int length;
+    char* chars;
+    int length;
 } Sequence;
 
 Sequence* create_sequence();

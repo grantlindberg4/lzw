@@ -7,8 +7,8 @@
 #include "seq.h"
 
 typedef struct Table {
-	int size;
-	Sequence** array;
+    int size;
+    Sequence** array;
 } Table;
 
 Table* initialize_table();

@@ -6,23 +6,23 @@
 #include "bits.h"
 
 _Bool read_code(FILE* input, unsigned int* code) {
-	int msb = fgetc(input);
-	if(msb == EOF) {
-		return false;
-	}
-	int lsb = fgetc(input);
-	if(lsb == EOF) {
-		return false;
-	}
-	unsigned int result = ((msb & 0xFF) << 8) | (lsb & 0xFF);
-	*code = result;
+    int msb = fgetc(input);
+    if(msb == EOF) {
+        return false;
+    }
+    int lsb = fgetc(input);
+    if(lsb == EOF) {
+        return false;
+    }
+    unsigned int result = ((msb & 0xFF) << 8) | (lsb & 0xFF);
+    *code = result;
 
-	return true;
+    return true;
 }
 
 void write_code(FILE* output, unsigned int code) {
-	char msb = (code >> 8) & 0xFF;
-	char lsb = code & 0xFF;
-	fputc(msb, output);
-	fputc(lsb, output);
+    char msb = (code >> 8) & 0xFF;
+    char lsb = code & 0xFF;
+    fputc(msb, output);
+    fputc(lsb, output);
 }

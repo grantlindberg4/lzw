@@ -59,7 +59,7 @@ void destroy_dictionary(Dict* dictionary) {
         Entry* current = dictionary->array[i];
         while(current != NULL) {
             Entry* next = current->next;
-			delete_entry(current);
+            delete_entry(current);
             current = next;
         }
     }
@@ -68,8 +68,8 @@ void destroy_dictionary(Dict* dictionary) {
 }
 
 void delete_entry(Entry* entry) {
-	delete_sequence(entry->sequence);
-	free(entry);
+    delete_sequence(entry->sequence);
+    free(entry);
 }
 
 _Bool space_in(Dict* dictionary, int num_codes) {
