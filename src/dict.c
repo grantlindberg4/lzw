@@ -11,7 +11,7 @@ void insert_to_dictionary(Dict* dictionary, Sequence* sequence, unsigned int cod
     dictionary->array[hash_val] = entry;
 }
 
-_Bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code) {
+bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code) {
     unsigned hash_val = compute_hash_val(sequence) % dictionary->size;
     Entry* current = dictionary->array[hash_val];
     while(current != NULL) {
@@ -72,6 +72,6 @@ void delete_entry(Entry* entry) {
     free(entry);
 }
 
-_Bool space_in(Dict* dictionary, int num_codes) {
+bool space_in(Dict* dictionary, int num_codes) {
     return num_codes != MAX_CODE;
 }

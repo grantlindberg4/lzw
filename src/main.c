@@ -44,11 +44,11 @@ int main(int argc, char** argv) {
     enum CompressionType compression = None;
     enum FileType file_type = Nil;
 
-    _Bool able_to_execute = true;
-    _Bool searching_for_file = false;
+    bool able_to_execute = true;
+    bool searching_for_file = false;
 
-    _Bool checked_for_input = false;
-    _Bool checked_for_output = false;
+    bool checked_for_input = false;
+    bool checked_for_output = false;
 
     if(argc == 1) {
         fprintf(stderr, "Warning: Nothing to do. Specify either -encode or -decode\n\n");

@@ -30,7 +30,7 @@ unsigned int compute_hash_val(Sequence* sequence) {
     return h;
 }
 
-_Bool sequences_are_equal(Sequence* first, Sequence* other) {
+bool sequences_are_equal(Sequence* first, Sequence* other) {
     if(first->length != other->length) {
         return false;
     }

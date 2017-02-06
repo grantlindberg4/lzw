@@ -5,7 +5,7 @@
 
 #include "bits.h"
 
-_Bool read_code(FILE* input, unsigned int* code) {
+bool read_code(FILE* input, unsigned int* code) {
     int msb = fgetc(input);
     if(msb == EOF) {
         return false;

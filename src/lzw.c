@@ -27,7 +27,7 @@ void encode(FILE* input, FILE* output) {
         Sequence* X = copy_sequence(W);
         append(X, c);
         unsigned int code;
-        _Bool found_code = search_for_key(dictionary, X, &code);
+        bool found_code = search_for_key(dictionary, X, &code);
         if(found_code) {
             delete_sequence(W);
             W = copy_sequence(X);
@@ -47,7 +47,7 @@ void encode(FILE* input, FILE* output) {
         delete_sequence(X);
     }
     unsigned int code;
-    _Bool found_code = search_for_key(dictionary, W, &code);
+    bool found_code = search_for_key(dictionary, W, &code);
     if(found_code) {
         write_code(output, code);
     }
@@ -60,7 +60,7 @@ void decode(FILE* input, FILE* output) {
     Table* code_table = initialize_table();
 
     unsigned int prev_code;
-    _Bool reading_codes = read_code(input, &prev_code);
+    bool reading_codes = read_code(input, &prev_code);
     if(reading_codes) {
         output_sequence(code_table->array[prev_code], output);
     }

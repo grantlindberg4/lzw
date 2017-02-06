@@ -27,9 +27,9 @@ Dict* create_dictionary();
 void destroy_dictionary(Dict* dictionary);
 void insert_to_dictionary(Dict* dictionary, Sequence* sequence, unsigned int code);
 Entry* create_entry(Sequence* sequence, unsigned int code);
-_Bool occupied_at(Dict* dictionary, int index);
-_Bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code);
+bool occupied_at(Dict* dictionary, int index);
+bool search_for_key(Dict* dictionary, Sequence* sequence, unsigned int* code);
 void delete_entry(Entry* entry);
-_Bool space_in(Dict* dictionary, int num_codes);
+bool space_in(Dict* dictionary, int num_codes);
 
 #endif

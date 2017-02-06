@@ -12,7 +12,7 @@ typedef struct {
 Sequence* create_sequence();
 void append(Sequence* sequence, char c);
 unsigned int compute_hash_val(Sequence* sequence);
-_Bool sequences_are_equal(Sequence* first, Sequence* other);
+bool sequences_are_equal(Sequence* first, Sequence* other);
 Sequence* copy_sequence(Sequence* orig);
 void delete_sequence(Sequence* sequence);
 char first_char_of(Sequence* sequence);
