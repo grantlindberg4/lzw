@@ -7,7 +7,7 @@
 #include "dict.h"
 #include "bits.h"
 #include "seq.h"
-// #include "table.h"
+#include "table.h"
 
 void encode(FILE* input, FILE* output) {
     Dict* dictionary = initialize_dictionary();
@@ -55,33 +55,37 @@ void encode(FILE* input, FILE* output) {
     destroy_dictionary(dictionary);
 }
 
-// void decode(FILE* input, FILE* output) {
-//     Table* code_table = initialize_table();
+void decode(FILE* input, FILE* output) {
+    Table* code_table = initialize_table();
 
-//     unsigned int prev_code;
-//     _Bool reading_codes = read_code(input, &prev_code);
-//     while(reading_codes) {
-//         unsigned int curr_code;
-//         reading_codes = read_code(input, &curr_code);
-//         if(!reading_codes) {
-//             break;
-//         }
-//         char c;
-//         if(code_exists_in_table(code_table, &curr_code)) {
-//             c = first_char_of(code_table->array[curr_code]);
-//         }
-//         else {
-//             c = first_char_of(code_table->array[prev_code]);
-//         }
-//         int i = table_is_full(code_table);
-//         if(i > 0) {
-//             Sequence* W = code_table->array[prev_code];
-//             append(W, c);
-//             code_table->array[i] = W;
-//         }
-//         output_sequence(code_table->array[curr_code], output);
-//         prev_code = curr_code;
-//     }
+    unsigned int prev_code;
+    _Bool reading_codes = read_code(input, &prev_code);
+	// printf("prev code: %d\n", prev_code);
+	if(reading_codes) {
+		output_sequence(code_table->array[prev_code], output);
+	}
+    while(reading_codes) {
+        unsigned int curr_code;
+        reading_codes = read_code(input, &curr_code);
+        if(!reading_codes) {
+            break;
+        }
+        char c;
+        if(code_exists_in_table(code_table, curr_code)) {
+            c = first_char_of(code_table->array[curr_code]);
+        }
+        else {
+            c = first_char_of(code_table->array[prev_code]);
+        }
+        int i = table_is_full(code_table);
+        if(i >= 0) {
+            Sequence* W = copy_sequence(code_table->array[prev_code]);
+            append(W, c);
+            code_table->array[i] = W;
+        }
+        output_sequence(code_table->array[curr_code], output);
+        prev_code = curr_code;
+    }
 
-//     destroy_table(code_table);
-// }
+    destroy_table(code_table);
+}

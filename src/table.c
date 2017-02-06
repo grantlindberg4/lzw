@@ -31,8 +31,8 @@ void destroy_table(Table* code_table) {
     free(code_table);
 }
 
-_Bool code_exists_in_table(Table* code_table, unsigned int* code) {
-    return code_table->array[*code] != NULL;
+_Bool code_exists_in_table(Table* code_table, unsigned int code) {
+    return code_table->array[code] != NULL;
 }
 
 int table_is_full(Table* code_table) {

@@ -309,8 +309,31 @@ void test_lzw_encode(char* raw_name, char* lzw_name) {
 	assert(equal);
 }
 
+void test_lzw_decode(char* raw_name, char* lzw_name) {
+	FILE* raw_expected = fopen(raw_name, "r");
+	assert(raw_expected != NULL);
+	FILE* lzw = fopen(lzw_name, "r");
+	assert(lzw != NULL);
+	FILE* raw_actual = tmpfile();
+	assert(raw_actual != NULL);
+	printf("Comparing decoding %s and %s\n", lzw_name, raw_name);
+
+	decode(lzw, raw_actual);
+
+	fseek(raw_actual, 0, SEEK_SET);
+
+	bool equal = files_are_equal(raw_expected, raw_actual);
+
+	fclose(raw_expected);
+	fclose(lzw);
+	fclose(raw_actual);
+
+	assert(equal);
+}
+
 void test_lzw() {
-	for_each_fixture(test_lzw_encode);
+	// for_each_fixture(test_lzw_encode);
+	for_each_fixture(test_lzw_decode);
 }
 
 int main() {
