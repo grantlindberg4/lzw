@@ -61,7 +61,7 @@ void decode(FILE* input, FILE* output) {
 
     unsigned int prev_code;
     bool reading_codes = read_code(input, &prev_code);
-    if(reading_codes) {
+    if(reading_codes && code_exists_in_table(code_table, prev_code)) {
         output_sequence(code_table->array[prev_code], output);
     }
     while(reading_codes) {
@@ -75,6 +75,7 @@ void decode(FILE* input, FILE* output) {
             c = first_char_of(code_table->array[curr_code]);
         }
         else {
+            assert(code_exists_in_table(code_table, prev_code));
             c = first_char_of(code_table->array[prev_code]);
         }
         int i = table_is_full(code_table);

@@ -191,6 +191,11 @@ void test_dict() {
     assert(code == zero_one_code);
     assert(search_for_key(dict_3, one, &code));
     assert(code == '\1');
+
+    delete_sequence(one);
+    delete_sequence(zero_one);
+
+    destroy_dictionary(dict_3);
 }
 
 void test_table() {
